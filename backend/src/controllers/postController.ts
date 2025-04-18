@@ -1,40 +1,36 @@
 import { Request, Response } from 'express';
-import {
-  createPostService,
-  getPostsByAuthorService,
-  addTagToPostService,
-} from '../services/postService';
+import { createPost, getPosts } from '../services/postService';
 
-export const createPostController = async (req: Request, res: Response): Promise<void> => {
+export const createNewPost = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { title, content } = req.body;
-    const authorId = req.body.userId; // Injected by auth middleware
-    const post = await createPostService(title, content, authorId);
+    const { title, content, tagIds, categoryIds } = req.body;
+    const userId = (req as any).user?.userId;
+    
+    if (!userId) {
+      res.status(401).json({ error: 'Unauthorized' });
+      return;
+    }
+
+    const post = await createPost(title, content, userId, tagIds, categoryIds);
     res.status(201).json(post);
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-    res.status(400).json({ error: errorMessage });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ error: error.message });
+    } else {
+      res.status(400).json({ error: 'An unknown error occurred' });
+    }
   }
 };
 
-export const getPostsByAuthorController = async (req: Request, res: Response): Promise<void> => {
+export const getAllPosts = async (req: Request, res: Response): Promise<void> => {
   try {
-    const authorId = req.body.userId; // Injected by auth middleware
-    const posts = await getPostsByAuthorService(authorId);
-    res.status(200).json(posts);
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-    res.status(400).json({ error: errorMessage });
-  }
-};
-
-export const addTagToPostController = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { postId, tagName } = req.body;
-    const updatedPost = await addTagToPostService(postId, tagName);
-    res.status(200).json(updatedPost);
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-    res.status(400).json({ error: errorMessage });
+    const posts = await getPosts();
+    res.json(posts);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: 'An unknown error occurred' });
+    }
   }
 };

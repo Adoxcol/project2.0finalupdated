@@ -1,43 +1,24 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma';
 
-const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
-export const register = async (email: string, password: string): Promise<string> => {
-  // Check if the user already exists
-  const existingUser = await prisma.user.findUnique({ where: { email } });
-  if (existingUser) {
-    throw new Error('Email already exists.');
-  }
-
-  // Hash the password
+export const register = async (email: string, password: string) => {
   const hashedPassword = await bcrypt.hash(password, 10);
-
-  // Create the user
   const user = await prisma.user.create({
-    data: { email, password: hashedPassword },
+    data: { email, password: hashedPassword }
   });
-
-  // Generate a JWT token
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
-  return token;
+  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+  return { user, token };
 };
 
-export const login = async (email: string, password: string): Promise<string> => {
-  // Find the user by email
+export const login = async (email: string, password: string) => {
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) {
-    throw new Error('Invalid email or password.');
-  }
-
-  // Compare the password
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    throw new Error('Invalid email or password.');
-  }
-
-  // Generate a JWT token
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
-  return token;
+  if (!user) throw new Error('User not found');
+  
+  const valid = await bcrypt.compare(password, user.password);
+  if (!valid) throw new Error('Invalid password');
+  
+  return jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
 };
