@@ -49,4 +49,11 @@ model Group {
   name    String
   users   User[]
 }
-
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+  postId  Int
+  userId  Int
+  post    Post   @relation(fields: [postId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+}

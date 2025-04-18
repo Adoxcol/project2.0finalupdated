@@ -49,5 +49,3 @@ model Group {
   name  String
   users User[]
 }
-
-// Add more models as needed

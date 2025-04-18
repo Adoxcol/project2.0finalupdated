@@ -164,7 +164,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -174,17 +174,16 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://postgres:simin123@localhost:5432/project2.0?schema=public"
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id       Int      @id @default(autoincrement())\n  email    String   @unique\n  password String\n  profile  Profile?\n  posts    Post[]\n  groups   Group[]\n}\n\nmodel Profile {\n  id     Int    @id @default(autoincrement())\n  bio    String\n  userId Int    @unique\n  user   User   @relation(fields: [userId], references: [id])\n}\n\nmodel Post {\n  id     Int    @id @default(autoincrement())\n  title  String\n  userId Int\n  user   User   @relation(fields: [userId], references: [id])\n  tags   Tag[]\n}\n\nmodel Tag {\n  id    Int    @id @default(autoincrement())\n  name  String\n  posts Post[]\n}\n\nmodel Group {\n  id    Int    @id @default(autoincrement())\n  name  String\n  users User[]\n}\n\n// Add more models as needed\n",
-  "inlineSchemaHash": "7383207cd53d9d577b4bd40861d968a195e32832877cba340bfd1de017a27a6a",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id       Int      @id @default(autoincrement())\n  email    String   @unique\n  password String\n  profile  Profile?\n  posts    Post[]\n  groups   Group[]\n}\n\nmodel Profile {\n  id     Int    @id @default(autoincrement())\n  bio    String\n  userId Int    @unique\n  user   User   @relation(fields: [userId], references: [id])\n}\n\nmodel Post {\n  id     Int    @id @default(autoincrement())\n  title  String\n  userId Int\n  user   User   @relation(fields: [userId], references: [id])\n  tags   Tag[]\n}\n\nmodel Tag {\n  id    Int    @id @default(autoincrement())\n  name  String\n  posts Post[]\n}\n\nmodel Group {\n  id    Int    @id @default(autoincrement())\n  name  String\n  users User[]\n}\n",
+  "inlineSchemaHash": "7499067833bd8af01042830fc8d8e5ac1e342966eae791d0aa6ca1594fdcf8f5",
   "copyEngine": true
 }
 config.dirname = '/'
