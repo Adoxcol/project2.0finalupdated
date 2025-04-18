@@ -4,14 +4,11 @@ import postRoutes from './routes/postRoutes';
 import groupRoutes from './routes/groupRoutes';
 import { authenticate } from './middleware/auth';
 import cors from 'cors';
-
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', authenticate, postRoutes);
 app.use('/api/groups', authenticate, groupRoutes);
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

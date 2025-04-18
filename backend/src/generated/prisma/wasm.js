@@ -145,6 +145,13 @@ exports.Prisma.GroupScalarFieldEnum = {
   name: 'name'
 };
 
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  postId: 'postId',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -161,7 +168,8 @@ exports.Prisma.ModelName = {
   Profile: 'Profile',
   Post: 'Post',
   Tag: 'Tag',
-  Group: 'Group'
+  Group: 'Group',
+  Comment: 'Comment'
 };
 
 /**
