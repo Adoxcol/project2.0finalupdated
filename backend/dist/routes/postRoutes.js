@@ -1,23 +1,13 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-import express from 'express';
-import { createNewPost } from '../services/postService';
-import { authenticate } from '../middleware/auth';
-const router = express.Router();
-router.post('/', authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const post = yield createNewPost(req.body.title, req.user.userId);
-        res.status(201).json(post);
-    }
-    catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-}));
-export default router;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authMiddleware_1 = require("../middleware/authMiddleware");
+const postController_1 = require("../controllers/postController");
+const router = (0, express_1.Router)();
+// Create a new post
+router.post('/create', authMiddleware_1.authenticate, postController_1.createPostController);
+// Get all posts by the logged-in user
+router.get('/my-posts', authMiddleware_1.authenticate, postController_1.getPostsByAuthorController);
+// Add a tag to a post
+router.put('/add-tag', authMiddleware_1.authenticate, postController_1.addTagToPostController);
+exports.default = router;

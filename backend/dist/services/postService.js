@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,9 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { createPost } from '../repositories/postRepository';
-export const createNewPost = (title, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!title)
-        throw new Error('Title is required');
-    return createPost(title, userId);
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.addTagToPostService = exports.getPostsByAuthorService = exports.createPostService = void 0;
+const postRepository_1 = require("../repositories/postRepository");
+const createPostService = (title, content, authorId) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield (0, postRepository_1.createPost)(title, content, authorId);
 });
+exports.createPostService = createPostService;
+const getPostsByAuthorService = (authorId) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield (0, postRepository_1.getPostsByAuthor)(authorId);
+});
+exports.getPostsByAuthorService = getPostsByAuthorService;
+const addTagToPostService = (postId, tagName) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield (0, postRepository_1.addTagToPost)(postId, tagName);
+});
+exports.addTagToPostService = addTagToPostService;

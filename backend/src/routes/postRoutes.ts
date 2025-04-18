@@ -1,16 +1,20 @@
-import express from 'express';
-import { createNewPost } from '../services/postService';
-import { authenticate } from '../middleware/auth';
+import { Router } from 'express';
+import { authenticate } from '../middleware/authMiddleware';
+import {
+  createPostController,
+  getPostsByAuthorController,
+  addTagToPostController,
+} from '../controllers/postController';
 
-const router = express.Router();
+const router = Router();
 
-router.post('/', authenticate, async (req, res) => {
-  try {
-    const post = await createNewPost(req.body.title, (req as any).user.userId);
-    res.status(201).json(post);
-  } catch (error: any) {
-    res.status(400).json({ error: error.message });
-  }
-});
+
+router.post('/create', authenticate, createPostController);
+
+
+router.get('/my-posts', authenticate, getPostsByAuthorController);
+
+
+router.put('/add-tag', authenticate, addTagToPostController);
 
 export default router;

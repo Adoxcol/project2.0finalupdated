@@ -1,6 +1,13 @@
-import { createPost } from '../repositories/postRepository';
+import { createPost, getPostsByAuthor, addTagToPost } from '../repositories/postRepository';
 
-export const createNewPost = async (title: string, userId: number) => {
-  if (!title) throw new Error('Title is required');
-  return createPost(title, userId);
+export const createPostService = async (title: string, content: string, authorId: number) => {
+  return await createPost(title, content, authorId);
+};
+
+export const getPostsByAuthorService = async (authorId: number) => {
+  return await getPostsByAuthor(authorId);
+};
+
+export const addTagToPostService = async (postId: number, tagName: string) => {
+  return await addTagToPost(postId, tagName);
 };

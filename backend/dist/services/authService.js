@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,20 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { findUserByEmail, createUser } from '../repositories/userRepository';
-export const register = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const existingUser = yield findUserByEmail(email);
-    if (existingUser)
-        throw new Error('User already exists');
-    const hashedPassword = yield bcrypt.hash(password, 10);
-    return createUser(email, hashedPassword);
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.login = exports.register = void 0;
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const client_1 = require("@prisma/client");
+const jwtUtils_1 = require("../utils/jwtUtils");
+const prisma = new client_1.PrismaClient();
+const register = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
+    const user = yield prisma.user.create({
+        data: { email, password: hashedPassword },
+    });
+    return (0, jwtUtils_1.generateToken)(user.id);
 });
-export const login = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield findUserByEmail(email);
-    if (!user || !(yield bcrypt.compare(password, user.password))) {
+exports.register = register;
+const login = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield prisma.user.findUnique({ where: { email } });
+    if (!user || !(yield bcryptjs_1.default.compare(password, user.password))) {
         throw new Error('Invalid credentials');
     }
-    return jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return (0, jwtUtils_1.generateToken)(user.id);
 });
+exports.login = login;

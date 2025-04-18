@@ -1,17 +1,21 @@
 import express from 'express';
+import cors from 'cors';
 import authRoutes from './routes/authRoutes';
 import postRoutes from './routes/postRoutes';
-import groupRoutes from './routes/groupRoutes';
-import { authenticate } from './middleware/auth';
-import cors from 'cors';
+import profileRoutes from './routes/profileRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+
 app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
-app.use('/api/posts', authenticate, postRoutes);
-app.use('/api/groups', authenticate, groupRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/profiles', profileRoutes);
+app.use('/api/categories', categoryRoutes);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+}); 

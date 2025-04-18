@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -9,48 +8,38 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
-  password String
-  profile  Profile?
-  posts    Post[]
-  groups   Group[]
-  comments Comment[] @relation("UserComments") // Named relation
+  id        Int          @id @default(autoincrement())
+  email     String       @unique
+  password  String
+  profile   Profile?
+  posts     Post[]
 }
 
 model Profile {
-  id     Int    @id @default(autoincrement())
-  bio    String
-  userId Int    @unique
-  user   User   @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  bio       String
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Post {
-  id       Int       @id @default(autoincrement())
-  title    String
-  userId   Int
-  user     User      @relation(fields: [userId], references: [id])
-  tags     Tag[]
-  comments Comment[] @relation("PostComments") // Named relation
+  id         Int         @id @default(autoincrement())
+  title      String
+  content    String
+  authorId   Int
+  author     User        @relation(fields: [authorId], references: [id])
+  tags       Tag[]
+  categories Category[]
 }
 
 model Tag {
-  id    Int    @id @default(autoincrement())
-  name  String
-  posts Post[]
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  posts     Post[]
 }
 
-model Group {
-  id    Int    @id @default(autoincrement())
-  name  String
-  users User[]
-}
-
-model Comment {
-  id      Int    @id @default(autoincrement())
-  content String
-  postId  Int
-  userId  Int
-  post    Post   @relation(name: "PostComments", fields: [postId], references: [id])
-  user    User   @relation(name: "UserComments", fields: [userId], references: [id])
+model Category {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  posts   Post[]
 }
