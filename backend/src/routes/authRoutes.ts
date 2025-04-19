@@ -3,6 +3,7 @@ import { registerUser, loginUser } from '../controllers/authController';
 import { registerSchema, loginSchema } from '../lib/authSchema';
 import { validateRequest } from '../lib/validate';
 
+
 const router = Router();
 
 router.post('/register', validateRequest(registerSchema), registerUser);

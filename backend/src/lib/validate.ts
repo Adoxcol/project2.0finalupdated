@@ -1,3 +1,4 @@
+// validate.ts
 import { Request, Response, NextFunction } from 'express';
 import { ZodSchema } from 'zod';
 
@@ -10,7 +11,7 @@ export const validateRequest = (schema: ZodSchema) =>
         params: req.params,
         headers: req.headers,
       });
-      next(); 
+      next();
     } catch (error: any) {
       res.status(400).json({
         message: 'Validation failed',
