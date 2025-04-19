@@ -1,28 +1,31 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import ProtectedRoute from './components/ProtectedRoute'
-import { Home } from 'lucide-react'
-import Dashboard from './pages/Dashboard'
-import LoginPage from './pages/LoginPage'
-import Posts from './pages/Posts'
-import Profile from './pages/Profile'
-import RegisterPage from './pages/RegisterPage'
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Profile from './pages/Profile';
+import CreatePost from './pages/CreatePost';
+import Categories from './pages/Categories';
+import Navbar from './components/NavBar';
 
-
-export default function App() {
+const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+      <Navbar />
+      <div className="min-h-screen">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/posts" element={<Posts />} />
-        </Route>
-      </Routes>
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/categories" element={<Categories />} />
+        </Routes>
+      </div>
+      <Footer />
     </BrowserRouter>
-  )
-}
+  );
+};
+
+export default App;

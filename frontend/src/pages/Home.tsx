@@ -1,60 +1,61 @@
 
-import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
-import { Card } from "@/components/ui/card"
-import { Navbar } from "@/components/NavBar"
+import { Link } from 'react-router-dom';
 
-export default function Home() {
+const Home = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
-      <main className="container py-8 mx-auto">
-        {/* Debug div - remove after confirming it works */}
-        <div className="bg-red-500 p-4 text-white mb-4 rounded-lg">
-          If you see this, Tailwind is working!
-        </div>
+    <div className="container mx-auto p-4 min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+      {/* Hero Section */}
+      <div className="text-center py-12">
+        <h1 className="text-4xl font-bold mb-4">Welcome to My Blog</h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400">
+          Explore our features and start creating or reading posts today!
+        </p>
+      </div>
 
-        <section className="mb-12 text-center">
-          <h1 className="text-3xl font-bold mb-4">Welcome to MyApp</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            A simple, clean React application with authentication and routing
-          </p>
-        </section>
+      {/* Navigation Links */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Link to Login */}
+        <Link
+          to="/login"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-300 ease-in-out text-center"
+        >
+          Login
+        </Link>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="p-6">
-            <h3 className="font-semibold mb-2">Feature One</h3>
-            <p className="text-sm text-muted-foreground">
-              Basic CRUD operations with React and TypeScript
-            </p>
-          </Card>
-          <Card className="p-6">
-            <h3 className="font-semibold mb-2">Feature Two</h3>
-            <p className="text-sm text-muted-foreground">
-              Secure authentication flow
-            </p>
-          </Card>
-          <Card className="p-6">
-            <h3 className="font-semibold mb-2">Feature Three</h3>
-            <p className="text-sm text-muted-foreground">
-              Responsive design with Tailwind CSS
-            </p>
-          </Card>
-        </div>
+        {/* Link to Register */}
+        <Link
+          to="/register"
+          className="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-300 ease-in-out text-center"
+        >
+          Register
+        </Link>
 
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Get Started</h2>
-          <div className="flex justify-center gap-4">
-            <Button asChild>
-              <Link to="/register">Create Account</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link to="/login">Sign In</Link>
-            </Button>
-          </div>
-        </div>
-      </main>
+        {/* Link to Profile */}
+        <Link
+          to="/profile"
+          className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-300 ease-in-out text-center"
+        >
+          Profile
+        </Link>
+
+        {/* Link to Create Post */}
+        <Link
+          to="/create-post"
+          className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-300 ease-in-out text-center"
+        >
+          Create Post
+        </Link>
+
+        {/* Link to Categories */}
+        <Link
+          to="/categories"
+          className="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-300 ease-in-out text-center"
+        >
+          Categories
+        </Link>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+export default Home;
