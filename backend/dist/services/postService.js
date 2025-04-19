@@ -8,18 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addTagToPostService = exports.getPostsByAuthorService = exports.createPostService = void 0;
-const postRepository_1 = require("../repositories/postRepository");
-const createPostService = (title, content, authorId) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, postRepository_1.createPost)(title, content, authorId);
+exports.getPosts = exports.createPost = void 0;
+const prisma_1 = __importDefault(require("../prisma"));
+const createPost = (title, content, authorId, tagIds, categoryIds) => __awaiter(void 0, void 0, void 0, function* () {
+    return prisma_1.default.post.create({
+        data: {
+            title,
+            content,
+            authorId,
+            tags: { connect: tagIds.map(id => ({ id })) },
+            categories: { connect: categoryIds.map(id => ({ id })) }
+        },
+        include: { tags: true, categories: true }
+    });
 });
-exports.createPostService = createPostService;
-const getPostsByAuthorService = (authorId) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, postRepository_1.getPostsByAuthor)(authorId);
+exports.createPost = createPost;
+const getPosts = () => __awaiter(void 0, void 0, void 0, function* () {
+    return prisma_1.default.post.findMany({
+        include: { author: true, tags: true, categories: true }
+    });
 });
-exports.getPostsByAuthorService = getPostsByAuthorService;
-const addTagToPostService = (postId, tagName) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, postRepository_1.addTagToPost)(postId, tagName);
-});
-exports.addTagToPostService = addTagToPostService;
+exports.getPosts = getPosts;

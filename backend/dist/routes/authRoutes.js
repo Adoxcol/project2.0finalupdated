@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const authController_1 = require("../controllers/authController");
+const authSchema_1 = require("../lib/authSchema");
+const validate_1 = require("../lib/validate");
 const router = (0, express_1.Router)();
-router.post('/register', authController_1.registerUser);
-router.post('/login', authController_1.loginUser);
+router.post('/register', (0, validate_1.validateRequest)(authSchema_1.registerSchema), authController_1.registerUser);
+router.post('/login', (0, validate_1.validateRequest)(authSchema_1.loginSchema), authController_1.loginUser);
 exports.default = router;
