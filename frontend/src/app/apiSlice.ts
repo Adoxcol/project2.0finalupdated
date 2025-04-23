@@ -8,18 +8,10 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     
     registerUser: builder.mutation({
-      query: (credentials) => ({
-        url: '/auth/register',
-        method: 'POST',
-        body: credentials,
-      }),
+      query: (credentials) => ({ url: '/auth/register', method: 'POST', body: credentials }),
     }),
     loginUser: builder.mutation({
-      query: (credentials) => ({
-        url: '/auth/login',
-        method: 'POST',
-        body: credentials,
-      }),
+      query: (credentials) => ({ url: '/auth/login', method: 'POST', body: credentials }),
     }),
 
     
@@ -28,11 +20,7 @@ export const apiSlice = createApi({
       providesTags: ['Posts'],
     }),
     addPost: builder.mutation({
-      query: (post) => ({
-        url: '/posts',
-        method: 'POST',
-        body: post,
-      }),
+      query: (post) => ({ url: '/posts', method: 'POST', body: post }),
       invalidatesTags: ['Posts'], 
     }),
 
@@ -42,11 +30,7 @@ export const apiSlice = createApi({
       providesTags: ['Categories'],
     }),
     addCategory: builder.mutation({
-      query: (category) => ({
-        url: '/categories',
-        method: 'POST',
-        body: category,
-      }),
+      query: (category) => ({ url: '/categories', method: 'POST', body: category }),
       invalidatesTags: ['Categories'], 
     }),
 
@@ -56,12 +40,16 @@ export const apiSlice = createApi({
       providesTags: ['Profile'],
     }),
     updateProfile: builder.mutation({
-      query: (profileData) => ({
-        url: '/profile',
-        method: 'PUT',
-        body: profileData,
-      }),
+      query: (profileData) => ({ url: '/profile', method: 'PUT', body: profileData }),
       invalidatesTags: ['Profile'], 
+    }),
+
+    
+    getRealtimePosts: builder.query({
+      query: () => '/posts',
+      extraOptions: {
+        pollingInterval: 5000, 
+      },
     }),
   }),
 });
@@ -76,4 +64,5 @@ export const {
   useAddCategoryMutation,
   useGetProfileQuery,
   useUpdateProfileMutation,
+  useGetRealtimePostsQuery,
 } = apiSlice;
