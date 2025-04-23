@@ -1,4 +1,4 @@
-
+// src/features/userSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
 
 interface UserState {
