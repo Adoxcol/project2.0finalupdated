@@ -39,7 +39,6 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
         id: true,
         title: true,
         content: true,
-        numericValue: true,
         author: {
           select: {
             email: true, 

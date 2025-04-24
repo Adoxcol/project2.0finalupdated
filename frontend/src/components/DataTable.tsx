@@ -7,12 +7,12 @@ import {
   flexRender,
 } from '@tanstack/react-table';
 import {
-  Table,
   Button,
   Box,
   Text,
 } from '@chakra-ui/react';
 import {
+  Table,
   Thead,
   Tbody,
   Tr,
