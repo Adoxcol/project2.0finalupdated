@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DataTable from '@/components/DataTable';
 import DownloadButtons from '@/components/DownloadButtons';
+import { Spinner, Box, Text } from '@chakra-ui/react';
 
 const PostsPage = () => {
   const [data, setData] = useState([]);
@@ -13,9 +14,9 @@ const PostsPage = () => {
         const response = await axios.get('/api/posts?page=1&limit=10');
         const { posts } = response.data;
         setData(posts);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
         setLoading(false);
       }
     };
@@ -23,14 +24,23 @@ const PostsPage = () => {
     fetchData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Posts</h1>
+    <Box p={4}>
+      <Text fontSize="2xl" fontWeight="bold" mb={4}>Posts</Text>
+      
+      
       <DataTable data={data} />
-      <DownloadButtons data={data} />
-    </div>
+
+     
+      {loading && (
+        <Box textAlign="center" mt={4}>
+          <Spinner size="lg" color="green.500" />
+        </Box>
+      )}
+
+     
+      {!loading && <DownloadButtons data={data} />}
+    </Box>
   );
 };
 
