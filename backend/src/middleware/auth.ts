@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import { verifyAccessToken } from '../utils/jwtUtils';
+
 
 export const authenticate = (
   req: Request,
@@ -7,16 +8,20 @@ export const authenticate = (
   next: NextFunction
 ): void => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.startsWith('Bearer ')
+      ? authHeader.split(' ')[1]
+      : null;
+
     if (!token) {
-      res.status(401).send('Access denied');
+      res.status(401).json({ message: 'Access denied. No token provided.' });
       return;
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    (req as any).user = decoded;
+    const decoded = verifyAccessToken(token);
+    (req as any).user = decoded; 
     next();
   } catch (err) {
-    res.status(400).send('Invalid token');
+    res.status(403).json({ message: 'Invalid or expired token.' });
   }
 };
